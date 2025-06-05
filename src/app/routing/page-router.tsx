@@ -11,11 +11,14 @@ import {
   Main,
   LoginPage,
   RegistrationForm,
+  CatalogProduct,
+  DetailedProduct,
   NotFound,
-  LoadingPage,
+  ProfilePage,
 } from "../../pages";
 import { useAuth } from "../../shared";
-import { ObtainAnonymousAccessToken } from "../../shared/api";
+import { ObtainAnonymousAccessToken, LoadingPlaceholder } from "../../shared";
+import { Header, Footer } from "../../widgets";
 
 function MainRedirect(): undefined {
   const navigate = useNavigate();
@@ -30,7 +33,7 @@ function GuestRoute({ children }: { children: ReactNode }): ReactNode {
   const { isLoggedIn, isAuthCheckReady } = useAuth();
 
   if (!isAuthCheckReady) {
-    return <LoadingPage />;
+    return <LoadingPlaceholder />;
   }
 
   if (!isLoggedIn) {
@@ -40,40 +43,69 @@ function GuestRoute({ children }: { children: ReactNode }): ReactNode {
   return <Navigate to="/main" replace />;
 }
 
+function UserRoute({ children }: { children: ReactNode }): ReactNode {
+  const { isLoggedIn, isAuthCheckReady } = useAuth();
+
+  if (!isAuthCheckReady) {
+    return <LoadingPlaceholder />;
+  }
+
+  if (!isLoggedIn) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+}
+
 export function PageRouter(): React.ReactNode {
   return (
-    // <BrowserRouter basename="/eCommerce-Application">
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MainRedirect />}></Route>
-
-        <Route
-          path="/main"
-          element={
-            <>
-              <Main />
-              <ObtainAnonymousAccessToken />
-            </>
-          }
-        ></Route>
-        <Route
-          path="/login"
-          element={
-            <GuestRoute>
-              <LoginPage />
-            </GuestRoute>
-          }
-        ></Route>
-        <Route
-          path="/registration"
-          element={
-            <GuestRoute>
-              <RegistrationForm />
-            </GuestRoute>
-          }
-        ></Route>
-        <Route path="*" element={<NotFound />}></Route>
-      </Routes>
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        <ObtainAnonymousAccessToken />
+        <Header />
+        <Routes>
+          <Route path="/" element={<MainRedirect />}></Route>
+          <Route
+            path="/main"
+            element={
+              <>
+                <Main />
+              </>
+            }
+          ></Route>
+          <Route
+            path="/login"
+            element={
+              <GuestRoute>
+                <LoginPage />
+              </GuestRoute>
+            }
+          ></Route>
+          <Route
+            path="/registration"
+            element={
+              <GuestRoute>
+                <RegistrationForm />
+              </GuestRoute>
+            }
+          ></Route>
+          <Route path="/catalog" element={<CatalogProduct />}></Route>
+          <Route
+            path="/catalog/product/:productKey"
+            element={<DetailedProduct />}
+          ></Route>
+          <Route
+            path="/profile"
+            element={
+              <UserRoute>
+                <ProfilePage />
+              </UserRoute>
+            }
+          ></Route>
+          <Route path="*" element={<NotFound />}></Route>
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+    </>
   );
 }

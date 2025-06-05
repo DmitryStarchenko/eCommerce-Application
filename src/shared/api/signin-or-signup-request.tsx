@@ -5,8 +5,13 @@ import {
   CLIENT_SECRET,
   PROJECT_KEY,
 } from "../../project-config";
-import { saveTokenCookie } from "../ui/index";
-import type { AccessToken, BodyLogin, BodySignUp, Error } from "./index";
+import { getTokenFromCookie, TOKEN_NAMES, saveTokenCookie } from "../";
+import type {
+  AccessToken,
+  BodyLogin,
+  BodySignUp,
+  CustomerAllInfo,
+} from "./index";
 
 function goAnimationAlert(): void {
   const alert = document.querySelector(".alert");
@@ -20,20 +25,10 @@ function removeAnimationAlert(): void {
 
 export async function sendingSignInOrSignUpRequest(
   body: BodySignUp | BodyLogin,
-  typeRequest: string,
+  typeRequest: string
 ): Promise<string> {
   let errorMessage = "";
-  let BEARER_TOKEN = "";
-  const ACCESS_TOKEN = "user_access_token";
-  const REFRESH_TOKEN = "user_refresh_token";
-  const arrayCookies = document.cookie.split("; ");
-  for (const cookie of arrayCookies) {
-    const [name, value] = cookie.split("=");
-    if (name === "anonymous_access_token") {
-      BEARER_TOKEN = value;
-      break;
-    }
-  }
+  const BEARER_TOKEN = getTokenFromCookie(TOKEN_NAMES.guestAccess);
   await fetch(`${API_HOST}/${PROJECT_KEY}/me/${typeRequest}`, {
     method: "POST",
     headers: {
@@ -42,10 +37,15 @@ export async function sendingSignInOrSignUpRequest(
     body: JSON.stringify(body),
   })
     .then((response) => response.json())
-    .then(async (data: Error) => {
+    .then(async (data: CustomerAllInfo) => {
       if (data.statusCode) {
         errorMessage = data.message;
       } else {
+        saveTokenCookie(data.customer.id, TOKEN_NAMES.activeUserID);
+        saveTokenCookie(
+          data.customer.version.toString(),
+          TOKEN_NAMES.userVersion
+        );
         if (typeRequest === "signup") {
           goAnimationAlert();
           setTimeout(() => {
@@ -59,12 +59,12 @@ export async function sendingSignInOrSignUpRequest(
             headers: {
               Authorization: `Basic ${btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)}`,
             },
-          },
+          }
         )
           .then((response) => response.json())
           .then((data: AccessToken) => {
-            saveTokenCookie(data.access_token, ACCESS_TOKEN);
-            saveTokenCookie(data.refresh_token, REFRESH_TOKEN);
+            saveTokenCookie(data.access_token, TOKEN_NAMES.successUserAccess);
+            saveTokenCookie(data.refresh_token, TOKEN_NAMES.successUserRefresh);
           })
           .catch(() => (errorMessage = "No connection"));
       }

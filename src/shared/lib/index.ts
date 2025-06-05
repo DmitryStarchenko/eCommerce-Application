@@ -1,2 +1,9 @@
 export { useAuth, AuthUserContext } from "./auth";
-export { hasLoggedInToken } from "./token";
+export {
+  hasLoggedInToken,
+  TOKEN_NAMES,
+  getTokenFromCookie,
+  saveTokenCookie,
+} from "./token";
+export { parseMainProductData, parseProductDataForCard } from "./data-parsing";
+export type { ProductInfo } from "./data-parsing";
