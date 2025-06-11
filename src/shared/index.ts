@@ -17,5 +17,6 @@ export {
   type PriceInfo,
   createProductCard,
   ButtonAddToCart,
+  ToCatalogButton,
 } from "./ui";
 export * from "./api";
