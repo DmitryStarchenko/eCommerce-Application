@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState, type ReactElement } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
 import {
   addingDeletingModifyingItemsInCart,
   TotalLineItemQuantityContext,
@@ -10,11 +11,11 @@ export function ButtonAddToCart({
 }: {
   productId: string;
 }): ReactElement {
+  const [isLoading, setIsLoading] = useState(false);
   const [isProductInCart, setIsProductInCart] = useState(false);
   const [lineItemId, setLineItemId] = useState<string>();
-  const { setTotalLineItemQuantity, productsCheckout } = useContext(
-    TotalLineItemQuantityContext,
-  );
+  const { setTotalLineItemQuantity, productsCheckout, setProductsCheckout } =
+    useContext(TotalLineItemQuantityContext);
 
   useEffect(() => {
     if (productsCheckout) {
@@ -29,29 +30,35 @@ export function ButtonAddToCart({
   }, [productId, productsCheckout]);
 
   const addProductToCart = async (): Promise<void> => {
+    setIsLoading(true);
     const actions = {
       action: "addLineItem",
       productId: productId,
     };
     const cart = await addingDeletingModifyingItemsInCart(actions);
+    setProductsCheckout(cart.lineItems);
     setTotalLineItemQuantity(cart.totalLineItemQuantity);
-    setIsProductInCart(true);
     const productInCart = cart.lineItems.find(
       (lineItem) => lineItem.productId === productId,
     );
     if (productInCart) {
       setLineItemId(productInCart.id);
     }
+    setIsProductInCart(true);
+    setIsLoading(false);
   };
 
   const removeProductFromCart = async (): Promise<void> => {
+    setIsLoading(true);
     const actions = {
       action: "removeLineItem",
       lineItemId: lineItemId,
     };
     const cart = await addingDeletingModifyingItemsInCart(actions);
+    setProductsCheckout(cart.lineItems);
     setTotalLineItemQuantity(cart.totalLineItemQuantity);
     setIsProductInCart(false);
+    setIsLoading(false);
   };
 
   return isProductInCart === false ? (
@@ -62,7 +69,7 @@ export function ButtonAddToCart({
         void addProductToCart();
       }}
     >
-      ADD TO CART
+      {isLoading ? <CircularProgress size={35} color="info" /> : "ADD TO CART"}
     </button>
   ) : (
     <button
@@ -72,7 +79,11 @@ export function ButtonAddToCart({
         void removeProductFromCart();
       }}
     >
-      REMOVE FROM CART
+      {isLoading ? (
+        <CircularProgress size={35} color="error" />
+      ) : (
+        "REMOVE FROM CART"
+      )}
     </button>
   );
 }
