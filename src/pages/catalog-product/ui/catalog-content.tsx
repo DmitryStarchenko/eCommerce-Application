@@ -1,10 +1,6 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo } from "react";
 import type { ReactElement } from "react";
-import { Box, CircularProgress, Alert } from "@mui/material";
-import { getAllProducts } from "../api";
-import { sendingFilterSortingSearchRequest } from "../api";
-import type { MasterData, Product } from "../../../shared";
-import { NoResultsFound, useAuth, LoadingPlaceholder } from "../../../shared";
+import { Box } from "@mui/material";
 import { CardList } from "./card-list";
 import type { VisualFilterState, FilterSubmitData } from "./filters-list";
 import { FiltersList, SearchInput } from "./filters-list";
@@ -30,15 +26,12 @@ const INITIAL_FILTERS_STATE: VisualFilterState = {
 
 export function CatalogContent(): ReactElement {
   const [breadcrumb, setBreadcrumb] = useState<string>("CARS");
+
   const [currentFilters, setCurrentFilters] = useState<VisualFilterState>(
     () => INITIAL_FILTERS_STATE,
   );
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [currentSortOption, setCurrentSortOption] = useState<string>("");
-  const [products, setProducts] = useState<MasterData[] | Product[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const { isGuestAccess } = useAuth();
 
   const filterAndSortStrings = useMemo(() => {
     const parameters: string[] = [];
@@ -103,47 +96,6 @@ export function CatalogContent(): ReactElement {
     return parameters;
   }, [currentFilters, searchQuery, currentSortOption]);
 
-  useEffect(() => {
-    let isMounted = true;
-
-    const fetchProducts = async (): Promise<void> => {
-      setLoading(true);
-      setError(null);
-      try {
-        const hasActiveParameters = filterAndSortStrings.length > 0;
-        const isCategorySelected = currentFilters.categories !== "";
-        const shouldFetchAllProducts =
-          !hasActiveParameters && !isCategorySelected;
-
-        const data = await (shouldFetchAllProducts
-          ? getAllProducts()
-          : sendingFilterSortingSearchRequest(filterAndSortStrings.join("&")));
-
-        const productList = data.results;
-
-        if (isMounted) {
-          setProducts(productList);
-        }
-      } catch (error_) {
-        setError(
-          error_ instanceof Error
-            ? error_.message
-            : "An unknown error occurred",
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (isGuestAccess) {
-      void fetchProducts();
-    }
-
-    return (): void => {
-      isMounted = false;
-    };
-  }, [filterAndSortStrings, currentFilters, isGuestAccess]);
-
   const handleFilterSubmit = useCallback((data: FilterSubmitData) => {
     setCurrentFilters((previousFilters) => ({
       ...previousFilters,
@@ -189,10 +141,6 @@ export function CatalogContent(): ReactElement {
     setCurrentSortOption("");
   }, []);
 
-  if (!isGuestAccess) {
-    return <LoadingPlaceholder />;
-  }
-
   return (
     <Box
       sx={{
@@ -220,22 +168,6 @@ export function CatalogContent(): ReactElement {
         />
       </Box>
       <Box sx={{ flexGrow: 1 }}>
-        {loading && (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              p: 4,
-            }}
-          >
-            <CircularProgress />
-          </Box>
-        )}
-        {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {error}
-          </Alert>
-        )}
         <div className="main">
           <img
             className="sale-board"
@@ -256,10 +188,7 @@ export function CatalogContent(): ReactElement {
             />
           </div>
         </div>
-        {!loading && !error && products.length > 0 && (
-          <CardList products={products} />
-        )}
-        {!loading && !error && products.length === 0 && <NoResultsFound />}
+        <CardList filterAndSortString={filterAndSortStrings.join("&")} />
       </Box>
     </Box>
   );
