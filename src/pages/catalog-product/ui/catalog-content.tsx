@@ -7,11 +7,9 @@ import { FiltersList, SearchInput } from "./filters-list";
 import { SortSelect } from "./sort-select";
 import { AddBreadcrumb, CreateCategoriesButton } from ".";
 import "./styles.css";
-
 const FILTER_REQUEST = "filter=variants.";
 const ATTRIBUTE_FILTER_REQUEST = "filter=variants.attributes.";
 const SEARCH_REQUEST = "fuzzy=true&text.en-US=";
-
 const INITIAL_FILTERS_STATE: VisualFilterState = {
   priceMin: "",
   priceMax: "",
@@ -35,7 +33,6 @@ export function CatalogContent(): ReactElement {
 
   const filterAndSortStrings = useMemo(() => {
     const parameters: string[] = [];
-
     if (currentFilters.priceMin || currentFilters.priceMax) {
       const from =
         currentFilters.priceMin === ""
@@ -84,15 +81,12 @@ export function CatalogContent(): ReactElement {
         `filter=categories.id:"${String(currentFilters.categories)}"`,
       );
     }
-
     if (searchQuery) {
       parameters.push(`${SEARCH_REQUEST}${encodeURIComponent(searchQuery)}`);
     }
-
     if (currentSortOption) {
       parameters.push(`sort=${encodeURIComponent(currentSortOption)}`);
     }
-
     return parameters;
   }, [currentFilters, searchQuery, currentSortOption]);
 
@@ -103,7 +97,6 @@ export function CatalogContent(): ReactElement {
       categories: previousFilters.categories,
     }));
   }, []);
-
   const handleCategoryChange = useCallback(
     (categoryId: string | null, categoryName: string) => {
       setBreadcrumb(categoryName.toUpperCase());
@@ -116,15 +109,12 @@ export function CatalogContent(): ReactElement {
     },
     [],
   );
-
   const handleSearch = useCallback((query: string) => {
     setSearchQuery(query);
   }, []);
-
   const handleSortChange = useCallback((sortOption: string) => {
     setCurrentSortOption(sortOption);
   }, []);
-
   const handleResetAttributeFilters = useCallback(() => {
     setCurrentFilters((previousFilters) => ({
       ...INITIAL_FILTERS_STATE,
@@ -133,7 +123,6 @@ export function CatalogContent(): ReactElement {
     setSearchQuery("");
     setCurrentSortOption("");
   }, []);
-
   const handleFullReset = useCallback(() => {
     setCurrentFilters(INITIAL_FILTERS_STATE);
     setBreadcrumb("CARS");

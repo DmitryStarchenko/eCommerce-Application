@@ -2,9 +2,8 @@ import { Box, IconButton, Paper, Tooltip, Typography } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { type ReactElement } from "react";
 import { Link } from "react-router-dom";
-import { ToCatalogButton } from "@/shared";
 
-export function EmptyCart(): ReactElement {
+export function UnauthorizedCart(): ReactElement {
   return (
     <Box
       sx={{
@@ -17,8 +16,9 @@ export function EmptyCart(): ReactElement {
       <Paper
         elevation={5}
         sx={{
-          backgroundColor: "var(--transparent)",
+          boxShadow: "cvar(--ard-hover-shadow)",
           color: "var(--white-color)",
+          backgroundColor: "var(--transparent)",
           display: "flex",
           width: "auto",
           maxWidth: "40rem",
@@ -50,7 +50,11 @@ export function EmptyCart(): ReactElement {
             Is your journey to your perfect car just beginning?{" "}
           </Typography>
         </Box>
-        <ToCatalogButton />
+        <Link to="/login" className="link">
+          <button color="var(--light-gray)" className="button-main-head">
+            LOGIN TO PLACE AN ORDER
+          </button>
+        </Link>
       </Paper>
     </Box>
   );
