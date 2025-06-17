@@ -30,7 +30,7 @@
   right: 20px;
   width: 30px;
   height: 70px;
-  background-image: url("assets/catalog/icon-sale.png");
+  background-image: url("../../../../public/assets/catalog/icon-sale.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
