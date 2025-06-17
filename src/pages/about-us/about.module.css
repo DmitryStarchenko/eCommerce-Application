@@ -43,8 +43,7 @@
 .iconRS {
   position: absolute;
   width: 90%;
-  height: 36%;
-  max-height: 300px;
+  height: 13%;
   left: 5%;
   padding: 100px 0 0 30px;
   border-radius: 35px;
@@ -91,8 +90,7 @@
 .iconTeam {
   position: absolute;
   width: 90%;
-  height: 36%;
-  max-height: 300px;
+  height: 13%;
   right: 5%;
   padding: 100px 30px 0 0;
   border-radius: 35px;
@@ -152,7 +150,8 @@
 
 .imageAuthor1,
 .imageAuthor2,
-.imageAuthor3 {
+.imageAuthor3,
+.imageMentor {
   height: 100%;
   width: 35%;
   border-radius: 35px;
@@ -198,6 +197,14 @@
   font-family: var(--font-family);
   color: var(--price-gold-color);
 }
+
+.rankMentor {
+  margin: 0 0 0 94%;
+  font-size: 20px;
+  font-family: var(--font-family);
+  color: var(--price-gold-color);
+}
+
 .textAuthor1,
 .textAuthor2 {
   width: 100%;
@@ -210,7 +217,8 @@
 .author:hover {
   .iconAuthor1,
   .iconAuthor2,
-  .iconAuthor3 {
+  .iconAuthor3,
+  .iconMentor {
     animation: animation-author-out 3s forwards;
   }
 }
@@ -218,12 +226,14 @@
 .author:not(hover) {
   .iconAuthor1,
   .iconAuthor2,
-  .iconAuthor3 {
+  .iconAuthor3,
+  .iconMentor {
     animation: animation-author-go 3s forwards;
   }
 }
 
-.iconAuthor2 {
+.iconAuthor2,
+.iconMentor {
   padding-top: 40px;
   overflow: hidden;
   right: 5%;
@@ -261,6 +271,14 @@
 
 .imageAuthor3 {
   background-image: url(../../../assets/about/dima.jpg);
+}
+
+.imageMentor {
+  background-image: url(../../../assets/about/best-mentor.jpg);
+}
+
+.iconMentor {
+  font-size: 100px;
 }
 
 @keyframes animation-author-go {
@@ -321,9 +339,10 @@
   .myTeam {
     height: 220px;
   }
+
   .iconRS {
     padding: 80px 0 0 30px;
-    height: 30%;
+    height: 12.5%;
     font-size: 50px;
   }
 
@@ -335,7 +354,7 @@
 
   .iconTeam {
     padding: 80px 30px 0 0;
-    height: 30%;
+    height: 12.5%;
     font-size: 50px;
   }
   .textAuthor1,
@@ -345,6 +364,20 @@
 
   .rank {
     font-size: 16px;
+  }
+
+  .iconMentor {
+    font-size: 70px;
+  }
+  .rankMentor {
+    margin: 0 0 0 90%;
+    font-size: 16px;
+  }
+}
+
+@media screen and (width <= 1000px) {
+  .iconMentor {
+    font-size: 60px;
   }
 }
 
@@ -359,19 +392,22 @@
     .iconTeam,
     .iconAuthor1,
     .iconAuthor2,
-    .iconAuthor3 {
+    .iconAuthor3,
+    .iconMentor {
       animation-play-state: paused;
     }
   }
 
   .iconAuthor1,
   .iconAuthor2,
-  .iconAuthor3 {
+  .iconAuthor3,
+  .iconMentor {
     display: none;
   }
 
   .iconRS,
   .iconTeam {
+    height: 9%;
     width: 30%;
     padding: 80px 0 0 20px;
     font-size: 45px;
@@ -402,7 +438,8 @@
 
   .imageAuthor1,
   .imageAuthor2,
-  .imageAuthor3 {
+  .imageAuthor3,
+  .imageMentor {
     height: 300px;
     width: 50%;
   }
@@ -416,7 +453,8 @@
 
   .iconAuthor1,
   .iconAuthor2,
-  .iconAuthor3 {
+  .iconAuthor3,
+  .iconMentor {
     height: 60%;
   }
   .textAuthor1,
@@ -445,7 +483,7 @@
   .iconRS,
   .iconTeam {
     padding: 60px 0 0 20px;
-    height: 20%;
+    height: 6.5%;
     font-size: 30px;
   }
 
@@ -465,13 +503,18 @@
 
   .imageAuthor1,
   .imageAuthor2,
-  .imageAuthor3 {
+  .imageAuthor3,
+  .imageMentor {
     width: 70%;
   }
 
   .textAuthor1,
   .textAuthor2 {
     font-size: 12px;
+  }
+
+  .rankMentor {
+    margin: 0 0 0 80%;
   }
 }
 
@@ -483,7 +526,7 @@
   .iconRS,
   .iconTeam {
     padding: 50px 0 0 10px;
-    height: 20%;
+    height: 6.5%;
     font-size: 25px;
   }
 

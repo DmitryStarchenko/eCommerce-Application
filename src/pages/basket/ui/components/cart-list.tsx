@@ -16,7 +16,7 @@ import {
 import { Box, Button, Grid } from "@mui/material";
 import { CartItem } from "./cart-item";
 import { UnauthorizedCart } from "./unauthorized-cart";
-import { DialogClearCart, EmptyCart } from ".";
+import { DialogClearCart, DialogPlaceOrder, EmptyCart } from ".";
 import style from "./cart-list.module.css";
 import { applyPromoCode, deleteCart } from "../..";
 import { LoadingPage } from "@/pages/loading";
@@ -28,12 +28,14 @@ export function CartList(): ReactElement {
   const [inputValue, setInputValue] = useState<string>("");
   const [messagePromo, setMessagePromo] = useState<string>();
   const [discountCost, setDiscountCost] = useState<string>();
-  const [openDialog, setOpenDialog] = useState(false);
-  const [isHasDiscount, setIsHasDiscount] = useState<boolean>(false);
+  const [openDialogClearCart, setOpenDialogClearCart] = useState(false);
+  const [openDialogPlaceOrder, setOpenDialogPlaceOrder] = useState(false);
   const {
     totalLineItemQuantity,
     setTotalLineItemQuantity,
     setProductsCheckout,
+    isHasDiscount,
+    setIsHasDiscount,
   } = useContext(TotalLineItemQuantityContext);
 
   const { isLoggedIn } = useAuth();
@@ -51,12 +53,8 @@ export function CartList(): ReactElement {
         }
       });
     };
-    if (totalLineItemQuantity !== 0 && !isLoggedIn) {
-      void handlerCart();
-    } else if (isLoggedIn && totalLineItemQuantity) {
-      void handlerCart();
-    }
-  }, [isLoggedIn, totalLineItemQuantity]);
+    void handlerCart();
+  }, []);
 
   useEffect(() => {
     if (cart) {
@@ -70,6 +68,7 @@ export function CartList(): ReactElement {
           -cart.discountOnTotalPrice.discountedAmount.centAmount / 100,
         ).toLocaleString();
         setDiscountCost(discPrice);
+        setIsHasDiscount(true);
       }
     }
   }, [cart, setTotalLineItemQuantity]);
@@ -98,12 +97,20 @@ export function CartList(): ReactElement {
     void handlerPromoCode(inputValue);
   };
 
-  const handleClickOpen = (): void => {
-    setOpenDialog(true);
+  const handleClickOpenClearCart = (): void => {
+    setOpenDialogClearCart(true);
   };
 
-  const handleClose = (): void => {
-    setOpenDialog(false);
+  const handleCloseClearCart = (): void => {
+    setOpenDialogClearCart(false);
+  };
+
+  const handleClickOpenPlaceOrder = (): void => {
+    setOpenDialogPlaceOrder(true);
+  };
+
+  const handleClosePlaceOrder = (): void => {
+    setOpenDialogPlaceOrder(false);
   };
 
   const handlerPromoCode = async (inputValue: string): Promise<void> => {
@@ -147,7 +154,6 @@ export function CartList(): ReactElement {
   };
 
   if (!hasLoggedInToken() && totalLineItemQuantity === undefined) {
-    void clearCart();
     return (
       <>
         <UnauthorizedCart />
@@ -156,7 +162,6 @@ export function CartList(): ReactElement {
   }
 
   if (!isLoggedIn && totalLineItemQuantity === 0) {
-    void clearCart();
     return (
       <>
         <UnauthorizedCart />
@@ -165,7 +170,6 @@ export function CartList(): ReactElement {
   }
 
   if (isLoggedIn && totalLineItemQuantity === 0) {
-    void clearCart();
     return (
       <>
         <EmptyCart />
@@ -173,14 +177,6 @@ export function CartList(): ReactElement {
     );
   }
 
-  if (totalLineItemQuantity === undefined) {
-    void clearCart();
-    return (
-      <>
-        <EmptyCart />
-      </>
-    );
-  }
   return totalLineItemQuantity === undefined ? (
     <>
       <EmptyCart />
@@ -210,7 +206,7 @@ export function CartList(): ReactElement {
             ))
           : null}
       </Grid>
-      <button className={style.clearCart} onClick={handleClickOpen}>
+      <button className={style.clearCart} onClick={handleClickOpenClearCart}>
         CLEAR CART
       </button>
       <form className={style.formPromo} onSubmit={handleSubmit}>
@@ -249,10 +245,17 @@ export function CartList(): ReactElement {
           </div>
         </div>
       </Grid>
+      <button className={style.placeOrder} onClick={handleClickOpenPlaceOrder}>
+        PLACE AN ORDER
+      </button>
       <DialogClearCart
         clearCart={clearCart}
-        openDialog={openDialog}
-        handleClose={handleClose}
+        openDialog={openDialogClearCart}
+        handleClose={handleCloseClearCart}
+      />
+      <DialogPlaceOrder
+        openDialog={openDialogPlaceOrder}
+        handleClose={handleClosePlaceOrder}
       />
     </Box>
   );

@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { HeaderPropertiesType } from "./types";
 import "./styles.css";
@@ -12,9 +12,14 @@ export function WideScreenHeader({
 }: {
   headerProperties: HeaderPropertiesType;
 }): ReactNode {
-  const [colorMode, setColorMode] = useState(false);
-  const { isLoggedIn, totalLineItemQuantity, setIsDownloadPage, actOnLogout } =
-    headerProperties;
+  const {
+    isLoggedIn,
+    totalLineItemQuantity,
+    setIsDownloadPage,
+    actOnLogout,
+    colorMode,
+    setColorMode,
+  } = headerProperties;
 
   useEffect(() => {
     saveColorMode(setColorMode);
@@ -78,7 +83,11 @@ export function WideScreenHeader({
           <Link to="/cart" className="link-menu">
             <button className="button button-cart">
               <ShoppingCartIcon fontSize="large" />
-              <div className="quantity-item">{totalLineItemQuantity}</div>
+              <div className="quantity-item">
+                {totalLineItemQuantity === undefined
+                  ? 0
+                  : totalLineItemQuantity}
+              </div>
             </button>
           </Link>
         </div>

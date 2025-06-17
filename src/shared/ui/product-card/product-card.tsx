@@ -13,7 +13,7 @@ import { TotalLineItemQuantityContext } from "../../lib";
 
 const arePropertiesEqual = (
   previousProperties: { cardInfo: CardInfo },
-  nextProperties: { cardInfo: CardInfo }
+  nextProperties: { cardInfo: CardInfo },
 ): boolean => {
   if (
     previousProperties.cardInfo.productId !==
@@ -54,6 +54,9 @@ export const ProductCard = memo(
 
     return (
       <div onClick={() => clickOnCard()} className="card">
+        {priceInfo.discountedPrice > 0 ? (
+          <div className="icon-sale"></div>
+        ) : null}
         <CardMedia
           component="img"
           alt={imgLabel}
@@ -83,5 +86,5 @@ export const ProductCard = memo(
       </div>
     );
   },
-  arePropertiesEqual
+  arePropertiesEqual,
 );
