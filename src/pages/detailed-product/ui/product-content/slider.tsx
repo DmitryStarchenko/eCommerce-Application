@@ -31,7 +31,7 @@ export function Slider(properties: Properties): ReactElement {
             <SwiperSlide>
               <img
                 className="image-slider-dialog"
-                src={item.url}
+                src={`../../../../${item.url}`}
                 alt={item.label}
               />
             </SwiperSlide>

@@ -1,7 +1,7 @@
 export interface Actions {
   action: string;
   productId?: string;
-  lineitemId?: string;
+  lineItemId?: string;
   quantity?: number;
   code?: string;
 }

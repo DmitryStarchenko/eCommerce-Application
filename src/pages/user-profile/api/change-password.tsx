@@ -1,16 +1,12 @@
-import {
-  API_HOST,
-  AUTH_HOST,
-  CLIENT_ID,
-  CLIENT_SECRET,
-  PROJECT_KEY,
-} from "../../../project-config";
+import { LOCAL_API_URL } from "../../../project-config";
 import {
   getTokenFromCookie,
   saveTokenCookie,
   TOKEN_NAMES,
 } from "../../../shared";
-import type { AccessToken, Customer } from "../../../shared";
+
+// Сервер меняет пароль и возвращает обновлённого customer (без пароля).
+// Токен остаётся валидным, дополнительный OAuth запрос не нужен.
 
 export async function changePassword(
   currentPassword: string,
@@ -18,41 +14,29 @@ export async function changePassword(
 ): Promise<string> {
   let message: string;
   const USER_VERSION = getTokenFromCookie(TOKEN_NAMES.userVersion);
+  const USER_ID = getTokenFromCookie(TOKEN_NAMES.activeUserID);
   const BEARER_TOKEN = getTokenFromCookie(TOKEN_NAMES.successUserAccess);
   const body = {
+    id: USER_ID,
     version: Number(USER_VERSION),
     currentPassword: currentPassword,
     newPassword: newPassword,
   };
-  await fetch(`${API_HOST}/${PROJECT_KEY}/me/password`, {
+  await fetch(`${LOCAL_API_URL}/auth/change-password`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${BEARER_TOKEN}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
   })
     .then((response) => response.json())
-    .then(async (data: Customer) => {
+    .then((data: { id: string; version: number; message?: string }) => {
       if (data.id) {
         message = "Password successfully changed";
         saveTokenCookie(data.version.toString(), TOKEN_NAMES.userVersion);
-        await fetch(
-          `${AUTH_HOST}/oauth/${PROJECT_KEY}/customers/token?grant_type=password&username=${data.email}&password=${body.newPassword}`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Basic ${btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)}`,
-            },
-          },
-        )
-          .then((response) => response.json())
-          .then((data: AccessToken) => {
-            saveTokenCookie(data.access_token, TOKEN_NAMES.successUserAccess);
-            saveTokenCookie(data.refresh_token, TOKEN_NAMES.successUserRefresh);
-          })
-          .catch(() => console.error("No connection"));
       } else {
-        message = data.message;
+        message = data.message ?? "Unknown error";
       }
     })
     .catch((error: Error) => {

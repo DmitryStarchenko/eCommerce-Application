@@ -1,7 +1,7 @@
-import { API_HOST, PROJECT_KEY } from "../../../project-config";
+import type { Cart } from "..";
+import { LOCAL_API_URL } from "../../../project-config";
 import { getTokenFromCookie, saveTokenCookie, TOKEN_NAMES } from "../..";
 import type { Actions } from "./types";
-import type { Cart } from "..";
 
 // Принимает обьект actions:
 //        для добавления товара в корзину:
@@ -27,7 +27,13 @@ import type { Cart } from "..";
 export async function addingDeletingModifyingItemsInCart(
   actions: Actions,
 ): Promise<Cart> {
-  let cart: Cart;
+  let cart: Cart = {
+    id: "",
+    version: 0,
+    lineItems: [],
+    totalPrice: { currencyCode: "USD", centAmount: 0 },
+    totalLineItemQuantity: 0,
+  };
   const BEARER_TOKEN = getTokenFromCookie(TOKEN_NAMES.successUserAccess);
   const cartID = getTokenFromCookie(TOKEN_NAMES.cartID);
   const cartVersion = getTokenFromCookie(TOKEN_NAMES.cartVersion);
@@ -35,10 +41,11 @@ export async function addingDeletingModifyingItemsInCart(
     version: Number(cartVersion),
     actions: [actions],
   };
-  await fetch(`${API_HOST}/${PROJECT_KEY}/me/carts/${cartID}`, {
+  await fetch(`${LOCAL_API_URL}/carts/${cartID}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${BEARER_TOKEN}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
   })

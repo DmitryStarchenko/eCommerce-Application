@@ -7,13 +7,17 @@ import {
   FormInputText,
   FormSubmitButton,
   type LoginFormType,
-  LogInFormSchema,
+  type RegistrationFormType,
+  RegistrationFormSchema,
 } from "@/shared/ui";
 
 export const LoginForm = (): ReactElement => {
-  const { handleSubmit, control } = useForm<LoginFormType>({
+  const { handleSubmit, control } = useForm<
+    RegistrationFormType,
+    RegistrationFormType
+  >({
     mode: "onChange",
-    resolver: yupResolver(LogInFormSchema),
+    resolver: yupResolver(RegistrationFormSchema),
     defaultValues: {
       email: "",
       password: "",

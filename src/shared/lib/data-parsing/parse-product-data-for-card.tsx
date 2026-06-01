@@ -13,7 +13,7 @@ export function parseProductDataForCard(
 ): ProductInfo {
   let productId: string;
   let productKey: string;
-  let productImages: [Images];
+  let productImages: Images[];
   let productName: string;
   let productDescription: string;
   let currencyCode: string;

@@ -1,46 +1,48 @@
-import {
-  API_HOST,
-  AUTH_HOST,
-  CLIENT_ID,
-  CLIENT_SECRET,
-  PROJECT_KEY,
-} from "../../project-config";
-import { getTokenFromCookie, TOKEN_NAMES, saveTokenCookie } from "../";
-import type {
-  AccessToken,
-  BodyLogin,
-  BodySignUp,
-  CustomerAllInfo,
-} from "./index";
+import { LOCAL_API_URL } from "../../project-config";
+import { TOKEN_NAMES, saveTokenCookie } from "../";
+import type { BodyLogin, BodySignUp } from "./index";
 
-// эти две функции закомментированны временно, так как чуть позже они могут понадобится для реализации друго
-// function goAnimationAlert(): void {
-//   const alert = document.querySelector(".alert");
-//   alert.classList.add("animation");
-// }
-
-// function removeAnimationAlert(): void {
-//   const alert = document.querySelector(".alert");
-//   alert.classList.remove("animation");
-// }
+interface AuthResponse {
+  customer: {
+    id: string;
+    version: number;
+    email: string;
+    firstName: string;
+    lastName: string;
+    dateOfBirth: string;
+    addresses: unknown[];
+    defaultShippingAddressIds: string;
+    defaultbillingAddressIds: string;
+  };
+  cart: {
+    id: string;
+    version: number;
+  };
+  tokens: {
+    access_token: string;
+    refresh_token: string;
+    expires_in: number;
+    refresh_expires_in: number;
+  };
+}
 
 export async function sendingSignInOrSignUpRequest(
   body: BodySignUp | BodyLogin,
   typeRequest: string,
 ): Promise<string> {
   let errorMessage = "";
-  const BEARER_TOKEN = getTokenFromCookie(TOKEN_NAMES.guestAccess);
-  await fetch(`${API_HOST}/${PROJECT_KEY}/me/${typeRequest}`, {
+  const endpoint = typeRequest === "signup" ? "register" : "login";
+  await fetch(`${LOCAL_API_URL}/auth/${endpoint}`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${BEARER_TOKEN}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
   })
     .then((response) => response.json())
-    .then(async (data: CustomerAllInfo) => {
-      if (data.statusCode) {
-        errorMessage = data.message;
+    .then((data: AuthResponse & { message?: string; statusCode?: number }) => {
+      if (data.statusCode || data.message) {
+        errorMessage = data.message ?? "Unknown error";
       } else {
         saveTokenCookie(data.customer.id, TOKEN_NAMES.activeUserID);
         saveTokenCookie(
@@ -49,28 +51,14 @@ export async function sendingSignInOrSignUpRequest(
         );
         saveTokenCookie(data.cart.id, TOKEN_NAMES.cartID);
         saveTokenCookie(data.cart.version.toString(), TOKEN_NAMES.cartVersion);
-        if (typeRequest === "signup") {
-          // goAnimationAlert();
-          setTimeout(() => {
-            console.log("registration was successful");
-            // removeAnimationAlert();
-          }, 2500);
-        }
-        await fetch(
-          `${AUTH_HOST}/oauth/${PROJECT_KEY}/customers/token?grant_type=password&username=${body.email}&password=${body.password}`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Basic ${btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)}`,
-            },
-          },
-        )
-          .then((response) => response.json())
-          .then((data: AccessToken) => {
-            saveTokenCookie(data.access_token, TOKEN_NAMES.successUserAccess);
-            saveTokenCookie(data.refresh_token, TOKEN_NAMES.successUserRefresh);
-          })
-          .catch(() => (errorMessage = "No connection"));
+        saveTokenCookie(
+          data.tokens.access_token,
+          TOKEN_NAMES.successUserAccess,
+        );
+        saveTokenCookie(
+          data.tokens.refresh_token,
+          TOKEN_NAMES.successUserRefresh,
+        );
       }
     })
     .catch(() => (errorMessage = "No connection"));

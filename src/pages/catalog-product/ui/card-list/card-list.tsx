@@ -57,10 +57,14 @@ export const CardList = ({
 
         setTotalNumberOfResults(data.total);
         const productList: MasterData[] | Product[] = data.results;
-        setProducts((previousProductList) => [
-          ...previousProductList,
-          ...productList,
-        ]);
+        if (productList) {
+          setProducts((previousProductList) => [
+            ...previousProductList,
+            ...productList,
+          ]);
+        } else {
+          setProducts([]);
+        }
       } catch (error_) {
         setError(
           error_ instanceof Error

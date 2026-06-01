@@ -20,23 +20,32 @@ export function PersonalBlock(): React.ReactElement {
   const [isEditMode, setEditMode] = React.useState(false);
   const [stateUpdate, setStateUpdate] = React.useState(false);
 
+  // Первичная загрузка — один раз при монтировании
   React.useEffect(() => {
-    if (stateUpdate) {
-      void getUserInfoRequest().then((data) => {
+    void getUserInfoRequest().then((data) => {
+      if (data) {
         setFirstName(data.firstName);
         setLastName(data.lastName);
         setDateOfBirth(data.dateOfBirth);
         setEmail(data.email);
-      });
-    }
-  });
+      }
+    });
+  }, []);
 
-  void getUserInfoRequest().then((data) => {
-    setFirstName(data.firstName);
-    setLastName(data.lastName);
-    setDateOfBirth(data.dateOfBirth);
-    setEmail(data.email);
-  });
+  // Обновление после редактирования (stateUpdate переключается диалогами)
+  React.useEffect(() => {
+    if (stateUpdate) {
+      void getUserInfoRequest().then((data) => {
+        if (data) {
+          setFirstName(data.firstName);
+          setLastName(data.lastName);
+          setDateOfBirth(data.dateOfBirth);
+          setEmail(data.email);
+        }
+      });
+      setStateUpdate(false);
+    }
+  }, [stateUpdate]);
 
   return (
     <Container

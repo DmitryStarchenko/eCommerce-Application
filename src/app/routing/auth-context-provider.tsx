@@ -6,6 +6,10 @@ import {
 } from "../../shared";
 import type { ReactNode } from "react";
 
+const clearCookie = (name: string): void => {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+};
+
 export function AuthUserContextProvider({
   children,
 }: {
@@ -34,12 +38,14 @@ export function AuthUserContextProvider({
   }
 
   function logout(): void {
-    document.cookie =
-      "user_access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie =
-      "user_refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie =
-      "active_user_ID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    clearCookie("user_access_token");
+    clearCookie("user_refresh_token");
+    clearCookie("active_user_ID");
+    clearCookie("user_version");
+    clearCookie("cart_ID");
+    clearCookie("cart_version");
+    clearCookie("anonymous_access_token");
+    clearCookie("anonymous_refresh_token");
     setIsLoggedIn(false);
     setIsGuestAccess(false);
     void getGuestToken();

@@ -40,61 +40,35 @@ export interface CustomerAllInfo {
 }
 
 export interface Customer {
-  message: string;
+  message?: string;
   id: string;
   version: number;
   email: string;
   firstName: string;
   lastName: string;
   dateOfBirth: string;
-  addresses: [Addresses];
+  addresses: Addresses[];
   defaultShippingAddressIds: string;
   defaultbillingAddressIds: string;
 }
 
-export interface DataProduct {
-  limit: number;
-  offset: number;
-  count: number;
-  total: number;
-  results: [MasterData] | [Product];
-}
-
-export interface MasterData {
+export interface Cart {
   id: string;
-  key: string;
-  masterData: Current;
-}
-
-export interface Current {
-  current: {
-    id: string;
-    name: Name;
-    description: Description;
-    masterVariant: MasterVariant;
+  version: number;
+  lineItems: ProductInCart[];
+  totalPrice: Value;
+  discountOnTotalPrice?: {
+    discountedAmount: Value;
   };
+  totalLineItemQuantity: number;
 }
 
-export interface Product {
-  id: string;
-  key: string;
-  name: Name;
-  description: Description;
-  masterVariant: MasterVariant;
-}
-
-interface Name {
+export interface Name {
   "en-US": string;
 }
 
-interface Description {
+export interface Description {
   "en-US": string;
-}
-
-interface MasterVariant {
-  prices: [Prices];
-  images: [Images];
-  attributes: [Attributes];
 }
 
 export interface Prices {
@@ -114,19 +88,50 @@ export interface Images {
 
 export interface Attributes {
   name: string;
-  value: number;
+  value: number | string;
 }
 
-export interface Cart {
-  id: string;
-  version: number;
-  lineItems: [ProductInCart];
-  totalPrice: Value;
-  discountOnTotalPrice: {
-    discountedAmount: Value;
-  };
-  totalLineItemQuantity: number;
+export interface MasterVariant {
+  prices: Prices[];
+  images: Images[];
+  attributes: Attributes[];
 }
+
+export interface MasterData {
+  id: string;
+  key: string;
+  masterData: {
+    current: {
+      id: string;
+      name: Name;
+      description: Description;
+      masterVariant: MasterVariant;
+    };
+  };
+}
+
+export interface Product {
+  id: string;
+  key: string;
+  name: Name;
+  description: Description;
+  masterVariant: MasterVariant;
+}
+
+export interface ProductDetail {
+  id: string;
+  key: string;
+  masterData: {
+    current: {
+      id: string;
+      name: Name;
+      description: Description;
+      masterVariant: MasterVariant;
+    };
+  };
+}
+
+export type ProductDetailsList = ProductDetail[];
 
 export interface ProductInCart {
   id: string;
@@ -141,4 +146,12 @@ export interface ProductInCart {
 export interface CustomerCart {
   id: string;
   version: number;
+}
+
+export interface DataProduct {
+  limit: number;
+  offset: number;
+  count: number;
+  total: number;
+  results: MasterData[];
 }

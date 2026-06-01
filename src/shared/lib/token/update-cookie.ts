@@ -7,5 +7,6 @@ function createTokenCookie(updatedToken: string, nameToken: string): string {
   let newCookie = `${encodeURIComponent(nameToken)}=${encodeURIComponent(updatedToken)}`;
   const date = new Date(Date.now() + 3.6e8).toUTCString();
   newCookie += "; expires=" + `${date}`;
+  newCookie += "; path=/";
   return newCookie;
 }

@@ -1,15 +1,12 @@
-import { API_HOST, PROJECT_KEY } from "../../../project-config";
+import { LOCAL_API_URL } from "../../../project-config";
 import type { MasterData } from "../../../shared";
-import { getTokenFromCookie, TOKEN_NAMES } from "../../../shared";
 
-export async function getProduct(productKey: string): Promise<MasterData> {
-  let product: MasterData;
-  const BEARER_TOKEN = getTokenFromCookie(TOKEN_NAMES.successUserAccess);
-  await fetch(`${API_HOST}/${PROJECT_KEY}/products/key=${productKey}`, {
+export async function getProduct(
+  productKey: string,
+): Promise<MasterData | undefined> {
+  let product: MasterData | undefined;
+  await fetch(`${LOCAL_API_URL}/products/${productKey}`, {
     method: "GET",
-    headers: {
-      Authorization: `Bearer ${BEARER_TOKEN}`,
-    },
   })
     .then((response) => response.json())
     .then((data: MasterData) => {

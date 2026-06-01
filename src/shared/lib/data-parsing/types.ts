@@ -13,7 +13,7 @@ export interface ProductInfo {
 }
 
 export interface CartInfo {
-  allProductInCart: [ProductInCart];
+  allProductInCart: ProductInCart[] | null;
   totalPrice: number;
   discountOnTotalPrice: number;
   totalLineItemQuantity: number;

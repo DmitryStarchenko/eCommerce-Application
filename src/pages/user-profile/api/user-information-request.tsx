@@ -1,4 +1,4 @@
-import { API_HOST, PROJECT_KEY } from "../../../project-config";
+import { LOCAL_API_URL } from "../../../project-config";
 import {
   getTokenFromCookie,
   saveTokenCookie,
@@ -7,10 +7,20 @@ import {
 import type { Customer } from "../../../shared";
 
 export async function getUserInfoRequest(): Promise<Customer> {
-  let userInfo: Customer;
+  let userInfo: Customer = {
+    id: "",
+    version: 0,
+    email: "",
+    firstName: "",
+    lastName: "",
+    dateOfBirth: "",
+    addresses: [],
+    defaultShippingAddressIds: "",
+    defaultbillingAddressIds: "",
+  };
   const USER_ID = getTokenFromCookie(TOKEN_NAMES.activeUserID);
   const BEARER_TOKEN = getTokenFromCookie(TOKEN_NAMES.successUserAccess);
-  await fetch(`${API_HOST}/${PROJECT_KEY}/customers/${USER_ID}`, {
+  await fetch(`${LOCAL_API_URL}/users/${USER_ID}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${BEARER_TOKEN}`,

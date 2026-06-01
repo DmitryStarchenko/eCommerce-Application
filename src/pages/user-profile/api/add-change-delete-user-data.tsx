@@ -1,4 +1,4 @@
-import { API_HOST, PROJECT_KEY } from "../../../project-config";
+import { LOCAL_API_URL } from "../../../project-config";
 import type { Customer } from "../../../shared";
 import {
   getTokenFromCookie,
@@ -10,8 +10,18 @@ import type { Action } from "./types";
 export async function addChangeDeleteUserData(
   action: Action,
 ): Promise<Customer | string> {
-  let userInfo: Customer;
-  let errorInfo: string;
+  let userInfo: Customer = {
+    id: "",
+    version: 0,
+    email: "",
+    firstName: "",
+    lastName: "",
+    dateOfBirth: "",
+    addresses: [],
+    defaultShippingAddressIds: "",
+    defaultbillingAddressIds: "",
+  };
+  let errorInfo: string = "";
   const USER_ID = getTokenFromCookie(TOKEN_NAMES.activeUserID);
   const USER_VERSION = getTokenFromCookie(TOKEN_NAMES.userVersion);
   const BEARER_TOKEN = getTokenFromCookie(TOKEN_NAMES.successUserAccess);
@@ -19,10 +29,11 @@ export async function addChangeDeleteUserData(
     version: Number(USER_VERSION),
     actions: [action],
   };
-  await fetch(`${API_HOST}/${PROJECT_KEY}/customers/${USER_ID}`, {
+  await fetch(`${LOCAL_API_URL}/users/${USER_ID}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${BEARER_TOKEN}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
   })

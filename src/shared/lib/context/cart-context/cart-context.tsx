@@ -1,13 +1,13 @@
 import { useEffect, useState, type ReactElement } from "react";
 import { TotalLineItemQuantityContext } from ".";
 import { type Cart, getCart } from "../../..";
-import { type LineItem } from ".";
-
 export function TotalQuantityContextProvider({ children }): ReactElement {
   const [totalLineItemQuantity, setTotalLineItemQuantity] = useState(0);
-  const [productsCheckout, setProductsCheckout] = useState<[LineItem]>();
+  const [productsCheckout, setProductsCheckout] = useState<Cart["lineItems"]>(
+    [],
+  );
   const [isDownloadPage, setIsDownloadPage] = useState<boolean>(false);
-  const [cart, setCart] = useState<Cart>(null);
+  const [cart, setCart] = useState<Cart | null>(null);
   const [isHasDiscount, setIsHasDiscount] = useState<boolean>(false);
 
   useEffect(() => {

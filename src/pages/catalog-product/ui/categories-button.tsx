@@ -6,10 +6,10 @@ interface CreateCategoriesButtonProperties {
 }
 
 const CategoryIdForRequest = {
-  CARS: "2eec2a79-0f63-43b5-8ed7-cd62a2514075",
-  SEDAN: "0c22e01b-d2a5-4b28-8368-804fa51864d3",
-  PICKUP: "e7f4211d-9211-438f-b86d-3b4aa6715d93",
-  BUS: "3418e644-dc54-40fa-8235-2c5fa9f46ef0",
+  CARS: "",
+  SEDAN: "sedan-cat",
+  PICKUP: "pickup-cat",
+  BUS: "bus-cat",
 };
 
 export function CreateCategoriesButton({

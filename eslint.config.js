@@ -8,21 +8,52 @@ import tsParser from "@typescript-eslint/parser";
 import tsEslintPlugin from "@typescript-eslint/eslint-plugin";
 
 export default tseslint.config(
-  { ignores: ["dist", "node_modules/"] },
+  { ignores: ["dist", "node_modules/", "server/test/", "server/dist/"] },
+  // Server files: use server/tsconfig.json, Node.js env
+  {
+    files: ["server/**/*.{ts,tsx}"],
+    extends: [
+      js.configs.recommended,
+      ...tseslint.configs.recommendedTypeChecked,
+    ],
+    languageOptions: {
+      ecmaVersion: 2021,
+      globals: globals.node,
+      parser: tsParser,
+      parserOptions: {
+        project: "./server/tsconfig.json",
+        sourceType: "module",
+      },
+    },
+    plugins: {
+      "@typescript-eslint": tsEslintPlugin,
+      unicorn: eslintPluginUnicorn,
+    },
+    rules: {
+      "no-console": "warn",
+      // NestJS doesn't require explicit public/private on every method
+      "@typescript-eslint/explicit-member-accessibility": "off",
+      // NestJS services often delegate without this
+      "class-methods-use-this": "off",
+      // Member ordering: class properties can be anywhere
+      "@typescript-eslint/member-ordering": "off",
+      "unicorn/better-regex": "error",
+      "unicorn/no-document-cookie": "off",
+      "unicorn/no-null": "off",
+    },
+  },
+  // Frontend files: use root tsconfig.json, browser env, React rules
   {
     extends: [
       js.configs.recommended,
-      ...tseslint.configs.recommended,
-
       eslintPluginUnicorn.configs.recommended,
-      js.configs.recommended,
       tseslint.configs.recommendedTypeChecked,
     ],
     linterOptions: {
       reportUnusedDisableDirectives: "error",
       noInlineConfig: false,
     },
-    files: ["**/*.{ts,tsx}"],
+    files: ["src/**/*.{ts,tsx}", "vite.config.ts"],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,

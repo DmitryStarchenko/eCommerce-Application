@@ -36,13 +36,17 @@ export function ViewProducts(): ReactElement {
   }, []);
 
   const cards: ReactElement[] = [];
-  for (const product of products) {
-    cards.push(createProductCard(product));
+  if (products) {
+    for (const product of products) {
+      cards.push(createProductCard(product));
+    }
+  } else {
+    console.log("Отсутствует доступ к Commercetools");
   }
 
   return (
     <Grid container spacing={3} justifyContent={"center"} paddingTop={2}>
-      {cards}
+      {cards.length === 0 ? "Not found" : cards}
     </Grid>
   );
 }

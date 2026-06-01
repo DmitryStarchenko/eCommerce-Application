@@ -8,7 +8,6 @@ import {
 import {
   type Cart,
   getCart,
-  hasLoggedInToken,
   type ProductInCart,
   TotalLineItemQuantityContext,
   useAuth,
@@ -38,7 +37,7 @@ export function CartList(): ReactElement {
     setIsHasDiscount,
   } = useContext(TotalLineItemQuantityContext);
 
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, isGuestAccess } = useAuth();
 
   useLayoutEffect(() => {
     <LoadingPage />;
@@ -114,37 +113,34 @@ export function CartList(): ReactElement {
   };
 
   const handlerPromoCode = async (inputValue: string): Promise<void> => {
-    if (inputValue === "FaR7") {
-      const actions = {
-        action: "addDiscountCode",
-        code: inputValue,
-      };
-      const cart = await applyPromoCode(actions);
-      setCart(cart);
-      const discPrice = Math.trunc(
-        -cart.discountOnTotalPrice.discountedAmount.centAmount / 100,
-      ).toLocaleString();
-      setDiscountCost(discPrice);
-      setMessagePromo("PROMO CODE APPLIED");
-      setIsHasDiscount(true);
-      setTimeout(() => {
-        setMessagePromo("");
-      }, 4000);
-    } else {
+    const actions = {
+      action: "addDiscountCode",
+      code: inputValue,
+    };
+    try {
+      const updatedCart = await applyPromoCode(actions);
+      if (updatedCart && updatedCart.discountOnTotalPrice) {
+        setCart(updatedCart);
+        const discPrice = Math.trunc(
+          -updatedCart.discountOnTotalPrice.discountedAmount.centAmount / 100,
+        ).toLocaleString();
+        setDiscountCost(discPrice);
+        setMessagePromo("PROMO CODE APPLIED");
+        setIsHasDiscount(true);
+      } else {
+        setMessagePromo("YOU HAVE ENTERED AN INCORRECT PROMO CODE");
+      }
+    } catch {
       setMessagePromo("YOU HAVE ENTERED AN INCORRECT PROMO CODE");
-      setTimeout(() => {
-        setMessagePromo("");
-      }, 4000);
     }
+    setTimeout(() => {
+      setMessagePromo("");
+    }, 4000);
   };
 
   const removePromoCode = async (): Promise<void> => {
     const actions = {
       action: "removeDiscountCode",
-      discountCode: {
-        typeId: "discount-code",
-        id: "f5e85e1f-f16b-43dd-b481-ae8486203abc",
-      },
     };
     const cart = await applyPromoCode(actions);
     setCart(cart);
@@ -153,7 +149,8 @@ export function CartList(): ReactElement {
     setInputValue("");
   };
 
-  if (!hasLoggedInToken() && totalLineItemQuantity === undefined) {
+  // Анонимный гость без корзины (totalLineItemQuantity ещё не загружен)
+  if (!isLoggedIn && !isGuestAccess) {
     return (
       <>
         <UnauthorizedCart />
@@ -161,7 +158,8 @@ export function CartList(): ReactElement {
     );
   }
 
-  if (!isLoggedIn && totalLineItemQuantity === 0) {
+  // Анонимный пользователь с пустой корзиной
+  if (isGuestAccess && !isLoggedIn && totalLineItemQuantity === 0) {
     return (
       <>
         <UnauthorizedCart />
@@ -169,6 +167,7 @@ export function CartList(): ReactElement {
     );
   }
 
+  // Авторизованный пользователь с пустой корзиной
   if (isLoggedIn && totalLineItemQuantity === 0) {
     return (
       <>

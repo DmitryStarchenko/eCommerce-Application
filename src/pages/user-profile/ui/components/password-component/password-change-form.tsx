@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import { Alert, Avatar, Container, Paper, Snackbar } from "@mui/material";
 import * as React from "react";
 import Button from "@mui/material/Button";
@@ -52,7 +51,7 @@ export const PasswordChangeForm = (): React.ReactElement => {
   const onSubmit = async (data: Passwords): Promise<void> => {
     const answerFromApi = await changePassword(
       data.currentPassword,
-      data.confirmPassword,
+      data.newPassword,
     );
 
     setAnswerFromApi(answerFromApi);

@@ -1,92 +1,306 @@
-# eCommerce-Application
+<div align="center">
 
-## Description
+# 🚗 eCommerce Application
 
-The final project of the JavaScript/Front-end 2024Q4 course from RSSchool.
-This platform replicates real-world shopping experiences in a digital environment. It's a comprehensive online shopping portal that provides an interactive and seamless experience to users. From product discovery to checkout, the application ensures a smooth journey for the user, enhancing their engagement and boosting their purchasing confidence.
+### _Интерактивная платформа для продажи автомобилей_
 
-## Purposes
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white&style=for-the-badge)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?logo=typescript&logoColor=white&style=for-the-badge)
+![NestJS](https://img.shields.io/badge/NestJS-11-EA2845?logo=nestjs&logoColor=white&style=for-the-badge)
+![Vite](https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white&style=for-the-badge)
+![Material UI](https://img.shields.io/badge/MUI-7-007FFF?logo=mui&logoColor=white&style=for-the-badge)
 
-1. To gain experience in conditions as close as possible to real product development.
-2. To learn to resolve controversial issues within the team.
-3. To create a full-fledged finished product for use.
+**[Репозиторий](https://github.com/DmitryStarchenko/eCommerce-Application)**
 
-## Setup and Running Locally
+</div>
 
-Follow these steps to set up and run the project locally:
+---
 
-### 1. Clone the Repository
+## 📋 О проекте
 
-Clone the project to your local machine using Git:
+Финальный проект курса **JavaScript/Front-end 2024Q4** от [RS School](https://rs.school/).
+Полноценная платформа электронной коммерции с каталогом автомобилей, корзиной, поиском, фильтрацией и личным кабинетом.
 
-`git clone https://github.com/SergeySkakun/eCommerce-Application.git`
+В 2026 году переработана для полноценной работы без eCommerceTools, на **React + NestJS** с собственным in-memory API-сервером с помощью ИИ.
 
-### 2. Install Dependencies
+### 🎯 Цели проекта
 
-Navigate to the project directory and install the required dependencies using npm:
+| Цель                    | Описание                                                              |
+| :---------------------- | :-------------------------------------------------------------------- |
+| **🛠 Реальный опыт**    | Работа в условиях, максимально приближённых к промышленной разработке |
+| **🤝 Командная работа** | Научиться решать спорные вопросы внутри команды                       |
+| **🚀 Готовый продукт**  | Создать полнофункциональное приложение, готовое к использованию       |
+
+---
+
+## ✨ Возможности
+
+| Функция                   | Описание                                                        |
+| :------------------------ | :-------------------------------------------------------------- |
+| 🔐 **Авторизация**        | Регистрация, вход, анонимный доступ, смена пароля               |
+| 🚗 **Каталог**            | 18 автомобилей с пагинацией, фильтрацией, сортировкой и поиском |
+| 🔍 **Поиск**              | Fuzzy-поиск по названию и описанию                              |
+| 🏷️ **Категории**          | Sedan, Pickup, Bus                                              |
+| 📄 **Детальная страница** | Полная информация о товаре с изображениями                      |
+| 🛒 **Корзина**            | Добавление/удаление товаров, изменение количества, промокоды    |
+| 🎫 **Промокоды**          | Промокод со скидкой 7%                                          |
+| 👤 **Профиль**            | Личный кабинет с редактированием данных и сменой пароля         |
+| 🎨 **Material UI**        | Современный адаптивный интерфейс                                |
+
+---
+
+## 🏗️ Архитектура
 
 ```
+┌──────────────────────────────────────────────────┐
+│                   Frontend                       │
+│          React 19 + Vite + TypeScript            │
+│                                                  │
+│   ┌─────────┐ ┌──────────┐ ┌────────────────┐    │
+│   │  Pages  │ │ Widgets  │ │ Shared (API/UI)│    │
+│   └────┬────┘ └────┬─────┘ └───────┬────────┘    │
+│        └───────────┴───────────────┘             │
+│                      │ HTTP (REST)               │
+├──────────────────────┴───────────────────────────┤
+│                   Backend                        │
+│               NestJS 11 + TypeScript             │
+│                                                  │
+│   ┌──────────┐ ┌──────────┐ ┌────────────────┐   │
+│   │   Auth   │ │ Products │ │    Carts       │   │
+│   └──────────┘ └──────────┘ └────────────────┘   │
+│   ┌──────────┐ ┌──────────┐ ┌────────────────┐   │
+│   │  Users   │ │Category  │ │ In-Memory DB   │   │
+│   └──────────┘ └──────────┘ └────────────────┘   │
+└──────────────────────────────────────────────────┘
+```
+
+---
+
+## 🚀 Быстрый старт
+
+### Требования
+
+- **Node.js** v22.15.0+
+- **npm** v10+
+
+### Установка и запуск
+
+```bash
+# 1. Клонировать репозиторий
+git clone https://github.com/DmitryStarchenko/eCommerce-Application.git
 cd eCommerce-Application
+
+# 2. Установить зависимости фронтенда
 npm run init
+
+# 3. Установить зависимости сервера
+cd server && npm install && cd ..
+
+# 4. Запустить сервер (в отдельном терминале)
+cd server && npm run start:dev
+# Сервер доступен на http://localhost:3000/api
+
+# 5. Запустить фронтенд (в другом терминале)
+npm run dev
+# Фронтенд доступен на http://localhost:5173
 ```
 
-### 3. Run the Development Server
+---
 
-Start the development server:
+## 🛠️ Стек технологий
 
-`npm run dev`
+### Frontend
 
-This will start the project on localhost:5173 for development.
+| Технология                                      | Версия | Назначение    |
+| :---------------------------------------------- | :----: | :------------ |
+| [React](https://react.dev/)                     | 19.0.0 | UI библиотека |
+| [TypeScript](https://www.typescriptlang.org/)   |  5.7   | Типизация     |
+| [Vite](https://vite.dev/)                       |  6.3   | Сборщик       |
+| [Material UI](https://mui.com/)                 |  7.1   | Компоненты    |
+| [React Router](https://reactrouter.com/)        |  7.6   | Роутинг       |
+| [React Hook Form](https://react-hook-form.com/) |  7.56  | Формы         |
+| [Yup](https://github.com/jquense/yup)           |  1.6   | Валидация     |
+| [Swiper](https://swiperjs.com/)                 |  11.2  | Слайдеры      |
 
-### 4. Run the Development Server
+### Backend
 
-Start the development server:
+| Технология                                           | Версия | Назначение          |
+| :--------------------------------------------------- | :----: | :------------------ |
+| [NestJS](https://nestjs.com/)                        |   11   | Node.js фреймворк   |
+| [TypeScript](https://www.typescriptlang.org/)        |  5.7   | Типизация           |
+| [bcrypt](https://github.com/kelektiv/node.bcrypt.js) |   6    | Хеширование паролей |
+| [Jest](https://jestjs.io/)                           |   30   | Тестирование        |
 
-`npm run dev`
+### Качество кода
 
-This will output the bundled files in the dist directory.
+| Инструмент                                                | Версия | Назначение            |
+| :-------------------------------------------------------- | :----: | :-------------------- |
+| [ESLint](https://eslint.org/)                             |  9.26  | Линтер                |
+| [Prettier](https://prettier.io/)                          |  3.5   | Форматирование        |
+| [Stylelint](https://stylelint.io/)                        | 16.19  | Линтер стилей         |
+| [Husky](https://typicode.github.io/husky/)                |  9.1   | Git hooks             |
+| [Commitlint](https://commitlint.js.org/)                  |  19.8  | Линтер коммитов       |
+| [Lint-staged](https://github.com/lint-staged/lint-staged) |  15.5  | Линтинг staged файлов |
 
-### 5. Run Tests
+---
 
-To run the unit tests:
+## 📜 Доступные скрипты
 
-`npm run test`
+### Frontend (`./package.json`)
 
-## Available Scripts
+| Скрипт         | Команда                | Описание                                   |
+| :------------- | :--------------------- | :----------------------------------------- |
+| `init`         | `npm run init`         | Установка зависимостей                     |
+| `dev`          | `npm run dev`          | Сервер разработки (HMR, порт 5173)         |
+| `build`        | `npm run build`        | Production сборка (`tsc -b && vite build`) |
+| `preview`      | `npm run preview`      | Превью production сборки                   |
+| `lint`         | `npm run lint`         | Проверка ESLint                            |
+| `format`       | `npm run format`       | Форматирование Prettier                    |
+| `format:check` | `npm run format:check` | Проверка форматирования                    |
+| `stylelint`    | `npm run stylelint`    | Линтинг стилей                             |
 
-| Script            | Usage                  | Explanation                                                                                                                                                        |
-| :---------------- | :--------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **init**          | `npm run init`         | Install all necessary dependencies.                                                                                                                                |
-| **dev**           | `npm run dev`          | Starts the development server on [localhost:5173](http://localhost:5173). HMR (Hot Module Replacement) is enabled.                                                 |
-| **build**         | `npm run build`        | Builds the production version of the app. First compiles TypeScript files (`tsc -b`), then bundles the project using Vite. Output is located in the `dist` folder. |
-| **lint**          | `npm run lint`         | Runs [ESLint](https://eslint.org/) on the project files to detect code quality issues.                                                                             |
-| **preview**       | `npm run preview`      | Serves the production build locally to verify the output before deploying.                                                                                         |
-| **format**        | `npm run format`       | Formats all files in the `src/` folder using [Prettier](https://prettier.io/), applying the project’s formatting rules.                                            |
-| **format\:check** | `npm run format:check` | Checks if the code is properly formatted without making any changes. Useful for CI/CD pipelines.                                                                   |
-| **stylelint**     | `npm run stylelint`    | Runs [Stylelint](https://stylelint.io/) on `.css` and `.scss` files to automatically fix style issues.                                                             |
-| **prepare**       | `npm run prepare`      | Initializes Git hooks using [Husky](https://typicode.github.io/husky/). This script runs automatically after installing dependencies.                              |
-| **test**          | `npm run test`         | Executes tests using [Jest](https://jestjs.io/). Looks for test files inside the `src/` folder with `.test.tsx`/`.test.ts` extensions.                             |
+### Server (`./server/package.json`)
 
-## Technology Stack
+| Скрипт       | Команда              | Описание                       |
+| :----------- | :------------------- | :----------------------------- |
+| `start:dev`  | `npm run start:dev`  | Сервер разработки (watch mode) |
+| `build`      | `npm run build`      | Компиляция TypeScript          |
+| `start:prod` | `npm run start:prod` | Production запуск              |
+| `test:e2e`   | `npm run test:e2e`   | E2E тесты (20 сценариев)       |
+| `lint`       | `npm run lint`       | Проверка ESLint                |
 
-|   Technology    |                                                   Version                                                                                                        |
-| :-------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-|    **React**    |           [![React](https://img.shields.io/badge/React-^19.0.0-61DAFB?logo=react&logoColor=white)](https://react.dev/)                                           |
-| **TypeScript**  |  [![TypeScript](https://img.shields.io/badge/TypeScript-~5.7.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)                         |
-| **Material UI** |     [![Material-UI](https://img.shields.io/badge/Material--UI-v7.1.0-blue.svg?logo=mui&logoColor=white)](https://mui.com/)                                       |
-|     **CSS**     |  [![CSS](https://img.shields.io/badge/CSS-v3-639?logo=css&logoColor=fff)](https://www.w3.org/Style/CSS/Overview.en.html)                                         |
-|    **Jest**     |             [![Jest](https://img.shields.io/badge/Jest-^29.7.0-C21325?logo=jest&logoColor=white)](https://jestjs.io/)                                            |
-|    **Vite**     |             [![Vite](https://img.shields.io/badge/Vite-^6.3.1-646CFF?logo=vite&logoColor=white)](https://vite.dev/)                                              |
-|   **ESLint**    |          [![ESLint](https://img.shields.io/badge/ESLint-^9.26.0-4B32C3?logo=eslint&logoColor=white)](https://eslint.org/)                                        |
-|  **Prettier**   |       [![Prettier](https://img.shields.io/badge/Prettier-^3.5.3-F7B93E?logo=prettier&logoColor=white)](https://prettier.io/)                                     |
-| **Commitlint**  |    [![Commitlint](https://img.shields.io/badge/Commitlint-^19.8.0-3F51B5?logo=commitlint&logoColor=white)](https://commitlint.js.org/)                           |
-| **Lint-staged** | [![Lint-staged](https://img.shields.io/badge/Lint--staged-^15.5.1-DB7093?logo=githubactions&logoColor=white)](https://github.com/lint-staged/lint-staged#readme) |
-|    **Husky**    |            [![Husky](https://img.shields.io/badge/Husky-^9.1.7-5D3A00?logo=husky&logoColor=white)](https://typicode.github.io/husky/)                            |
-|   **Node.js**   |        [![Node.js](https://img.shields.io/badge/Node.js-v22.15.0-339933?logo=node.js&logoColor=white)](https://nodejs.org/en)                                    |
-|   **GitHub**    |        [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github&logoColor=white)](https://github.com/)          |
+---
 
-## Authors
+## 📂 Структура проекта
 
-- [dmitrystarchenko](https://github.com/dmitrystarchenko)
-- [bubnov-roma](https://github.com/bubnov-roma)
-- [sergeyskakun](https://github.com/sergeyskakun)
+```
+eCommerce-Application/
+├── src/                          # Frontend (React + Vite)
+│   ├── app/                      # Корневые настройки
+│   │   └── routing/              # Роутинг, AuthContext
+│   ├── pages/                    # Страницы
+│   │   ├── main/                 #   Главная
+│   │   ├── login/                #   Вход
+│   │   ├── registration/         #   Регистрация
+│   │   ├── catalog-product/      #   Каталог (фильтры, поиск, пагинация)
+│   │   ├── detailed-product/     #   Детальная страница товара
+│   │   ├── basket/               #   Корзина
+│   │   └── user-profile/         #   Личный кабинет
+│   ├── widgets/                  # Композиционные блоки
+│   │   └── header/               #   Шапка сайта
+│   └── shared/                   # Переиспользуемые модули
+│       ├── api/                  #   API-слой
+│       │   └── cart-api/         #     Эндпоинты корзины
+│       ├── lib/                  #   Утилиты
+│       │   ├── token/            #     Работа с токенами
+│       │   ├── context/          #     React-контексты
+│       │   └── data-parsing/     #     Парсинг данных
+│       └── ui/                   #   UI-компоненты
+│
+├── server/                       # Backend (NestJS)
+│   └── src/
+│       ├── auth/                 # Модуль авторизации
+│       ├── products/             # Модуль товаров + фильтры
+│       ├── carts/                # Модуль корзины
+│       ├── users/                # Модуль пользователей
+│       ├── categories/           # Модуль категорий
+│       ├── common/               # Общие типы, storage, утилиты
+│       └── data/                 # Статические данные (18 авто, 4 категории, 20 промокодов)
+│
+└── package.json
+```
+
+---
+
+## 📡 API Endpoints
+
+### 🔐 Auth
+
+| Метод  | Путь                        | Описание        |
+| :----- | :-------------------------- | :-------------- |
+| `POST` | `/api/auth/register`        | Регистрация     |
+| `POST` | `/api/auth/login`           | Вход            |
+| `POST` | `/api/auth/anonymous/token` | Анонимный токен |
+| `POST` | `/api/auth/change-password` | Смена пароля    |
+
+### 🚗 Products
+
+| Метод | Путь                   | Описание                     |
+| :---- | :--------------------- | :--------------------------- |
+| `GET` | `/api/products`        | Все товары (с пагинацией)    |
+| `GET` | `/api/products/search` | Поиск + фильтры + сортировка |
+| `GET` | `/api/products/:key`   | Товар по ключу               |
+| `GET` | `/api/categories`      | Все категории                |
+
+### 🛒 Carts
+
+| Метод    | Путь             | Описание                                              |
+| :------- | :--------------- | :---------------------------------------------------- |
+| `POST`   | `/api/carts`     | Создать корзину                                       |
+| `GET`    | `/api/carts/:id` | Получить корзину                                      |
+| `POST`   | `/api/carts/:id` | Обновить корзину (add/remove/change items, промокоды) |
+| `DELETE` | `/api/carts/:id` | Удалить корзину                                       |
+
+### 👤 Users
+
+| Метод  | Путь             | Описание           |
+| :----- | :--------------- | :----------------- |
+| `GET`  | `/api/users/:id` | Данные профиля     |
+| `POST` | `/api/users/:id` | Обновление профиля |
+
+---
+
+## 🧪 Тестирование
+
+Проект покрыт **20 E2E тестами**, проверяющими все основные пользовательские сценарии:
+
+```bash
+cd server && npm run test:e2e
+```
+
+| №     | Сценарий                                             | Статус |
+| :---- | :--------------------------------------------------- | :----: |
+| 1–13  | ✅ Основные сценарии (регистрация, корзина, профиль) |   ✅   |
+| 14–20 | ✅ Фильтрация, сортировка, поиск                     |   ✅   |
+
+**Результат: 20/20** ✅
+
+---
+
+## 👥 Команда
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/dmitrystarchenko">
+        <img src="https://github.com/dmitrystarchenko.png" width="80" alt="dmitrystarchenko"/>
+        <br />
+        <b>dmitrystarchenko</b>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/bubnov-roma">
+        <img src="https://github.com/bubnov-roma.png" width="80" alt="bubnov-roma"/>
+        <br />
+        <b>bubnov-roma</b>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/sergeyskakun">
+        <img src="https://github.com/sergeyskakun.png" width="80" alt="sergeyskakun"/>
+        <br />
+        <b>sergeyskakun</b>
+      </a>
+    </td>
+  </tr>
+</table>
+
+---
+
+<div align="center">
+
+**eCommerce Application** — финальный проект курса [RS School](https://rs.school/) JavaScript/Front-end 2024Q4
+
+⭐ Если проект был полезен, поставьте звезду на [GitHub](https://github.com/DmitryStarchenko/eCommerce-Application)!
+
+</div>
