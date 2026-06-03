@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
-const LOCAL_API_URL = "http://localhost:3000/api";
+const API_URL =
+  (import.meta.env.VITE_API_URL as string) || "http://localhost:3000/api";
 
 const API_HOST = import.meta.env.VITE_API_HOST as string;
 const AUTH_HOST = import.meta.env.VITE_AUTH_HOST as string;
@@ -9,7 +10,7 @@ const CLIENT_SECRET = import.meta.env.VITE_CLIENT_SECRET as string;
 const SCOPES = import.meta.env.VITE_SCOPES as string;
 
 export {
-  LOCAL_API_URL,
+  API_URL,
   API_HOST,
   AUTH_HOST,
   PROJECT_KEY,

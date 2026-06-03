@@ -1,4 +1,4 @@
-import { LOCAL_API_URL } from "../../../project-config";
+import { API_URL } from "../../../project-config";
 import {
   type Cart,
   createCart,
@@ -16,7 +16,7 @@ export async function deleteCart(): Promise<Cart> {
   };
   const BEARER_TOKEN = getTokenFromCookie(TOKEN_NAMES.successUserAccess);
   const cartID = getTokenFromCookie(TOKEN_NAMES.cartID);
-  await fetch(`${LOCAL_API_URL}/carts/${cartID}`, {
+  await fetch(`${API_URL}/carts/${cartID}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${BEARER_TOKEN}`,

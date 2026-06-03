@@ -1,5 +1,5 @@
 import type { Cart } from "..";
-import { LOCAL_API_URL } from "../../../project-config";
+import { API_URL } from "../../../project-config";
 import { getTokenFromCookie, saveTokenCookie, TOKEN_NAMES } from "../..";
 import type { Actions } from "./types";
 
@@ -41,7 +41,7 @@ export async function addingDeletingModifyingItemsInCart(
     version: Number(cartVersion),
     actions: [actions],
   };
-  await fetch(`${LOCAL_API_URL}/carts/${cartID}`, {
+  await fetch(`${API_URL}/carts/${cartID}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${BEARER_TOKEN}`,

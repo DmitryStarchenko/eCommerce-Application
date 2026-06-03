@@ -1,5 +1,5 @@
 import type { Cart } from "..";
-import { LOCAL_API_URL } from "../../../project-config";
+import { API_URL } from "../../../project-config";
 import { getTokenFromCookie, saveTokenCookie, TOKEN_NAMES } from "../../lib";
 
 // Создаёт новую корзину, сохраняет ID корзины и Version в куки
@@ -16,7 +16,7 @@ export async function createCart(): Promise<Cart> {
     currency: "USD",
   };
   const BEARER_TOKEN = getTokenFromCookie(TOKEN_NAMES.successUserAccess);
-  await fetch(`${LOCAL_API_URL}/carts`, {
+  await fetch(`${API_URL}/carts`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${BEARER_TOKEN}`,

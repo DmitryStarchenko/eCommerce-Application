@@ -1,4 +1,4 @@
-import { LOCAL_API_URL } from "../../../project-config";
+import { API_URL } from "../../../project-config";
 import { getTokenFromCookie, saveTokenCookie, TOKEN_NAMES } from "../..";
 import type { Cart } from "..";
 
@@ -12,7 +12,7 @@ export async function getCart(): Promise<Cart> {
   };
   const BEARER_TOKEN = getTokenFromCookie(TOKEN_NAMES.successUserAccess);
   const cartID = getTokenFromCookie(TOKEN_NAMES.cartID);
-  await fetch(`${LOCAL_API_URL}/carts/${cartID}`, {
+  await fetch(`${API_URL}/carts/${cartID}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -23,6 +23,6 @@ export async function getCart(): Promise<Cart> {
       saveTokenCookie(data.version.toString(), TOKEN_NAMES.cartVersion);
       cart = data;
     })
-    .catch((error) => console.log("Отсутствует доступ к серверу:", error));
+    .catch(() => {});
   return cart;
 }

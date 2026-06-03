@@ -1,4 +1,4 @@
-import { LOCAL_API_URL } from "../../../project-config";
+import { API_URL } from "../../../project-config";
 import {
   getTokenFromCookie,
   saveTokenCookie,
@@ -22,7 +22,7 @@ export async function applyPromoCode(actions: Actions): Promise<Cart> {
     version: Number(cartVersion),
     actions: [actions],
   };
-  const response = await fetch(`${LOCAL_API_URL}/carts/${cartID}`, {
+  const response = await fetch(`${API_URL}/carts/${cartID}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${BEARER_TOKEN}`,

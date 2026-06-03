@@ -1,4 +1,4 @@
-import { LOCAL_API_URL } from "../../../project-config";
+import { API_URL } from "../../../project-config";
 import {
   getTokenFromCookie,
   saveTokenCookie,
@@ -22,7 +22,7 @@ export async function changePassword(
     currentPassword: currentPassword,
     newPassword: newPassword,
   };
-  await fetch(`${LOCAL_API_URL}/auth/change-password`, {
+  await fetch(`${API_URL}/auth/change-password`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -41,7 +41,6 @@ export async function changePassword(
     })
     .catch((error: Error) => {
       message = error.message;
-      console.log("No connection");
     });
   return message;
 }

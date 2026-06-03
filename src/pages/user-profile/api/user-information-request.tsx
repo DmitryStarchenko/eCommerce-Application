@@ -1,4 +1,4 @@
-import { LOCAL_API_URL } from "../../../project-config";
+import { API_URL } from "../../../project-config";
 import {
   getTokenFromCookie,
   saveTokenCookie,
@@ -20,7 +20,7 @@ export async function getUserInfoRequest(): Promise<Customer> {
   };
   const USER_ID = getTokenFromCookie(TOKEN_NAMES.activeUserID);
   const BEARER_TOKEN = getTokenFromCookie(TOKEN_NAMES.successUserAccess);
-  await fetch(`${LOCAL_API_URL}/users/${USER_ID}`, {
+  await fetch(`${API_URL}/users/${USER_ID}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -31,6 +31,6 @@ export async function getUserInfoRequest(): Promise<Customer> {
       userInfo = data;
       saveTokenCookie(data.version.toString(), TOKEN_NAMES.userVersion);
     })
-    .catch(() => console.log("No connection"));
+    .catch(() => {});
   return userInfo;
 }

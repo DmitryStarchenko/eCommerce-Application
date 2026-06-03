@@ -1,4 +1,4 @@
-import { LOCAL_API_URL } from "../../../project-config";
+import { API_URL } from "../../../project-config";
 import type { DataProduct } from "../../../shared";
 
 export async function sendingFilterSortingSearchRequest(
@@ -8,7 +8,7 @@ export async function sendingFilterSortingSearchRequest(
 ): Promise<DataProduct> {
   let products: DataProduct;
   await fetch(
-    `${LOCAL_API_URL}/products/search?${token}&limit=${limit}&offset=${offset}`,
+    `${API_URL}/products/search?${token}&limit=${limit}&offset=${offset}`,
     {
       method: "GET",
     },
@@ -17,6 +17,6 @@ export async function sendingFilterSortingSearchRequest(
     .then((data: DataProduct) => {
       products = data;
     })
-    .catch(() => console.log("No connection"));
+    .catch(() => {});
   return products;
 }

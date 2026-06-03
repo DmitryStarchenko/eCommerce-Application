@@ -1,4 +1,4 @@
-import { LOCAL_API_URL } from "../../../project-config";
+import { API_URL } from "../../../project-config";
 import type { Customer } from "../../../shared";
 import {
   getTokenFromCookie,
@@ -29,7 +29,7 @@ export async function addChangeDeleteUserData(
     version: Number(USER_VERSION),
     actions: [action],
   };
-  await fetch(`${LOCAL_API_URL}/users/${USER_ID}`, {
+  await fetch(`${API_URL}/users/${USER_ID}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -44,9 +44,8 @@ export async function addChangeDeleteUserData(
         saveTokenCookie(data.version.toString(), TOKEN_NAMES.userVersion);
       } else {
         errorInfo = data.message;
-        console.error(data.message);
       }
     })
-    .catch(() => console.log("No connection"));
+    .catch(() => {});
   return userInfo ?? errorInfo;
 }

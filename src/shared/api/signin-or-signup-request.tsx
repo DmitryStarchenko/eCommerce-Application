@@ -1,4 +1,4 @@
-import { LOCAL_API_URL } from "../../project-config";
+import { API_URL } from "../../project-config";
 import { TOKEN_NAMES, saveTokenCookie } from "../";
 import type { BodyLogin, BodySignUp } from "./index";
 
@@ -32,7 +32,7 @@ export async function sendingSignInOrSignUpRequest(
 ): Promise<string> {
   let errorMessage = "";
   const endpoint = typeRequest === "signup" ? "register" : "login";
-  await fetch(`${LOCAL_API_URL}/auth/${endpoint}`, {
+  await fetch(`${API_URL}/auth/${endpoint}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
