@@ -6,7 +6,7 @@ export function generateId(): string {
 }
 
 export function omitPassword(customer: Customer): Omit<Customer, 'password'> {
-  const rest = { ...customer };
-  delete rest.password;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { password, ...rest } = customer;
   return rest;
 }
