@@ -11,6 +11,7 @@ async function bootstrap() {
       'http://localhost:5173',
       'http://localhost:4173',
       'http://localhost:5174',
+      'https://ecommerce-application-lumw.onrender.com',
     ],
     credentials: true,
   });
