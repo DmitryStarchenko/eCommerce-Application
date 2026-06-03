@@ -10,7 +10,7 @@
 ![Vite](https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white&style=for-the-badge)
 ![Material UI](https://img.shields.io/badge/MUI-7-007FFF?logo=mui&logoColor=white&style=for-the-badge)
 
-**[Репозиторий](https://github.com/DmitryStarchenko/eCommerce-Application)**
+**[Site](https://ecommerce-application-lumw.onrender.com)**
 
 </div>
 
@@ -21,7 +21,7 @@
 Финальный проект курса **JavaScript/Front-end 2024Q4** от [RS School](https://rs.school/).
 Полноценная платформа электронной коммерции с каталогом автомобилей, корзиной, поиском, фильтрацией и личным кабинетом.
 
-В 2026 году переработана для полноценной работы без eCommerceTools, на **React + NestJS** с собственным in-memory API-сервером с помощью ИИ.
+В 2026 году переработана для полноценной работы без eCommerceTools, на **React + NestJS** с собственным in-memory API-сервером.
 
 ### 🎯 Цели проекта
 
